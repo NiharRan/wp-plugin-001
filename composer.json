@@ -1,0 +1,16 @@
+{
+    "name": "nihar/wp-api",
+    "description": "This is a testing api plugin",
+    "autoload": {
+        "psr-4": {
+            "Nihar\\WpApi\\": "api/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nihar Ranjan Das",
+            "email": "niharranjandasmu@gmail.com"
+        }
+    ],
+    "require": {}
+}

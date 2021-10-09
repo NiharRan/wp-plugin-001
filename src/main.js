@@ -1,8 +1,24 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Vuex from "vuex";
 
-Vue.config.productionTip = false
+Vue.use(VueRouter);
+Vue.use(Vuex);
+
+import store from "./store";
+import alertMixin from "./mixins/alert";
+
+Vue.mixin(alertMixin);
+
+import router from "./router";
+
+import App from "./App.vue";
+
+Vue.config.productionTip = false;
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  el: "#wp-vue",
+  router,
+  store,
+  render: (h) => h(App),
+});
