@@ -16,6 +16,7 @@
  */
 
 use Nihar\WpApi\Api;
+use Nihar\WpApi\Includes\Frontend;
 use Nihar\WpApi\Includes\Admin;
 
 if (!defined('ABSPATH')) exit(); // No direct access allowed
@@ -46,6 +47,7 @@ class WP_VUE
         define("SMART_TABLE", $wpdb->prefix . 'smrt_table');
         define("WP_VUE_PLUGIN_URL", trailingslashit(plugin_dir_url(__FILE__)));
         define("WP_VUE_PLUGIN_DIR", trailingslashit(plugin_dir_url(__FILE__)));
+        define("WP_VUE_VIEW_DIR", trailingslashit(plugin_dir_path(__FILE__) . "views"));
         define('WPVK_NONCE', 'b?le*;K7.T2jk_*(+3&[G[xAc8O~Fv)2T/Zk9N:GKBkn$piN0.N%N~X91VbCn@.4');
     }
 
@@ -114,6 +116,7 @@ class WP_VUE
     {
         new Admin();
         new Api();
+        new Frontend();
     }
 
     public static function init()

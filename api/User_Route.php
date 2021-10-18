@@ -45,7 +45,7 @@ class User_Route extends WP_REST_Controller
                 ],
                 [
                     'methods' => WP_REST_Server::DELETABLE,
-                    'callback' => [$this, 'delete'],
+                    'callback' => [$this, 'destroy'],
                     'permission_callback' => [$this, 'get_users_permission_check'],
                     'args' => $this->get_collection_params()
                 ]
@@ -85,6 +85,17 @@ class User_Route extends WP_REST_Controller
         $data['status'] = $params['status'];
         $result = $this->user->update($data, $params['id']);
         return $result;
+    }
+
+
+    public function destroy(WP_REST_Request $request)
+    {
+        $params = $request->get_params();
+        if (is_array($params['id'])) {
+            return $this->user->destroy_many($params['id']);
+        }
+
+        return $this->user->destroy($params['id']);
     }
 
 

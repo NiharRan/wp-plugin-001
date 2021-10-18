@@ -59,4 +59,17 @@ class User
         global $wpdb;
         return $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table WHERE id=%d", $id));
     }
+
+    public function destroy_many($ids = [])
+    {
+        global $wpdb;
+        $ids = implode(",", array_filter($ids, fn ($id) => !is_null($id) && $id != ''));
+        return $wpdb->query("DELETE FROM $this->table WHERE id IN($ids)");
+    }
+
+    public function destroy($id)
+    {
+        global $wpdb;
+        return $wpdb->delete($this->table, ['id' => $id]);
+    }
 }
