@@ -3,8 +3,10 @@
 namespace Nihar\WpApi;
 
 use Nihar\WpApi\Models\User;
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
+use WP_REST_Response;
 use WP_REST_Server;
 
 class User_Route extends WP_REST_Controller
@@ -56,11 +58,7 @@ class User_Route extends WP_REST_Controller
     public function get_users(WP_REST_Request $request)
     {
         $params = $request->get_params();
-        $data = [];
-        if (isset($params['id'])) {
-            $data['id'] = $params['id'];
-        }
-        $response = $this->user->get_all_users($data);
+        $response = $this->user->get_filter_users($params);
         return $response;
     }
 
@@ -68,23 +66,86 @@ class User_Route extends WP_REST_Controller
     public function store(WP_REST_Request $request)
     {
         $params = $request->get_params();
+
+        $errors = [];
+
+        if (is_empty('name', $params)) {
+            $errors['name'] = 'Name is required';
+        } elseif (!isset($errors['name'])) {
+            $errors['name'] = '';
+        }
+
+        if (is_empty('email', $params)) {
+            $errors['email'] = 'E-mail is required';
+        } elseif (!isset($errors['email'])) {
+            $errors['email'] = '';
+        }
+
+        if (is_empty('role', $params)) {
+            $errors['role'] = 'Role is required';
+        } elseif (!isset($errors['role'])) {
+            $errors['role'] = '';
+        }
+
+        if (!is_unique('name', $params)) {
+            $errors['name'] = 'Name is already exist';
+        } elseif (!isset($errors['name'])) {
+            $errors['name'] = '';
+        }
+
+        if (!is_unique('email', $params)) {
+            $errors['email'] = 'E-mail is already exist';
+        } elseif (!isset($errors['email'])) {
+            $errors['email'] = '';
+        }
+
+
+        if (!is_validate($errors)) {
+            return new WP_REST_Response($errors, 404);
+        }
+
         $data['name'] = $params['name'];
         $data['email'] = $params['email'];
         $data['role'] = $params['role'];
         $data['status'] = 1;
         $result = $this->user->store($data);
-        return $result;
+        return new WP_REST_Response($result);
     }
 
     public function update(WP_REST_Request $request)
     {
         $params = $request->get_params();
+
+        $errors = [];
+
+        if (is_empty('name', $params)) {
+            $errors['name'] = 'Name is required';
+        } elseif (!isset($errors['name'])) {
+            $errors['name'] = '';
+        }
+
+        if (is_empty('email', $params)) {
+            $errors['email'] = 'E-mail is required';
+        } elseif (!isset($errors['email'])) {
+            $errors['email'] = '';
+        }
+
+        if (is_empty('role', $params)) {
+            $errors['role'] = 'Role is required';
+        } elseif (!isset($errors['role'])) {
+            $errors['role'] = '';
+        }
+
+        if (!is_validate($errors)) {
+            return new WP_REST_Response($errors, 404);
+        }
+
         $data['name'] = $params['name'];
         $data['email'] = $params['email'];
         $data['role'] = $params['role'];
         $data['status'] = $params['status'];
         $result = $this->user->update($data, $params['id']);
-        return $result;
+        return new WP_REST_Response($result);
     }
 
 

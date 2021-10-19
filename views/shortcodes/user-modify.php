@@ -2,10 +2,12 @@
     <div class="mb-4">
         <label class="mb-2 font-bold" for="name">Name</label>
         <input type="text" value="<?php echo $user ? $user->name : '' ?>" name="name" class="w-full" placeholder="Your Name" />
+        <span class="text-red-500 font-bold" id="name"></span>
     </div>
     <div class="mb-4">
         <label class="mb-2 font-bold" for="email">E-mail</label>
         <input type="email" class="w-full" value="<?php echo $user ? $user->email : '' ?>" name="email" placeholder="Your E-mail Address" />
+        <span class="text-red-500 font-bold" id="email"></span>
     </div>
     <div class="mb-4">
         <label class="mb-2 font-bold" for="role">Role</label>
@@ -14,6 +16,7 @@
             <option value="admin" <?php echo ($user && $user->role == 'admin') ? 'selected' : '' ?>>Admin</option>
             <option value="user" <?php echo ($user && $user->role == 'user') ? 'selected' : '' ?>>User</option>
         </select>
+        <span class="text-red-500 font-bold" id="role"></span>
     </div>
     <?php if ($action == 'edit') { ?>
         <div class="mb-4">
@@ -49,6 +52,20 @@
                     if (response) {
                         window.location.href = '/sample-page';
                     }
+                },
+                error: function(response) {
+                    const errors = response.responseJSON;
+                    console.log(errors)
+                    Object.keys(errors).forEach(function(key) {
+                        let el = $("#" + key);
+                        if (el && errors[key] != '') {
+                            el.text(errors[key]);
+                            el.siblings(".w-full").addClass("!border-red-600");
+                        } else {
+                            el.text("");
+                            el.siblings(".w-full").removeClass("!border-red-600");
+                        }
+                    })
                 }
             });
         })
@@ -66,6 +83,20 @@
                     if (response) {
                         window.location.href = '/sample-page';
                     }
+                },
+                error: function(response) {
+                    const errors = response.responseJSON;
+                    console.log(errors)
+                    Object.keys(errors).forEach(function(key) {
+                        let el = $("#" + key);
+                        if (el && errors[key] != '') {
+                            el.text(errors[key]);
+                            el.siblings(".w-full").addClass("!border-red-600");
+                        } else {
+                            el.text("");
+                            el.siblings(".w-full").removeClass("!border-red-600");
+                        }
+                    })
                 }
             });
         })

@@ -21,12 +21,61 @@ class User
         if (count($params) > 0) {
             $condition = 'WHERE  ';
         }
-        if (isset($params['id'])) {
+        if (isset($params['id']) && $params['id'] != '') {
             $condition .= "id=" . $params['id'] . " AND ";
         }
+        if (isset($params['name']) && $params['name'] != '') {
+            $condition .= "name LIKE '%" . $params['name'] . "%' AND ";
+        }
+        if (isset($params['email']) && $params['email'] != '') {
+            $condition .= "email LIKE '%" . $params['email'] . "%' AND ";
+        }
+        if (isset($params['role']) && $params['role'] != '') {
+            $condition .= "role='" . $params['role'] . "' AND ";
+        }
+        if (isset($params['status']) && $params['status'] != '') {
+            $condition .= "status=" . $params['status'] . " AND ";
+        }
+
         $condition = rtrim($condition, " AND ");
         $sql .= " $condition";
         $sql .= " ORDER BY id DESC";
+
+        // dd($params);
+
+        return $wpdb->get_results($sql);
+    }
+
+
+    public function get_filter_users($params = [])
+    {
+        global $wpdb;
+        $sql = "SELECT * FROM $this->table";
+        $condition = '';
+        if (isset($params['id']) && $params['id'] != '') {
+            $condition .= "id=" . $params['id'] . " AND ";
+        }
+        if (isset($params['name']) && $params['name'] != '') {
+            $condition .= "name LIKE '%" . $params['name'] . "%' AND ";
+        }
+        if (isset($params['email']) && $params['email'] != '') {
+            $condition .= "email LIKE '%" . $params['email'] . "%' AND ";
+        }
+        if (isset($params['role']) && $params['role'] != '') {
+            $condition .= "role='" . $params['role'] . "' AND ";
+        }
+        if (isset($params['status']) && $params['status'] != '') {
+            $condition .= "status=" . $params['status'] . " AND ";
+        }
+
+        if ($condition != '') {
+            $condition = " WHERE $condition ";
+        }
+
+        $condition = rtrim($condition, " AND ");
+        $sql .= $condition;
+        $sql .= " ORDER BY id DESC";
+
         return $wpdb->get_results($sql);
     }
 

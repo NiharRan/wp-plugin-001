@@ -4,7 +4,10 @@
     "autoload": {
         "psr-4": {
             "Nihar\\WpApi\\": "api/"
-        }
+        },
+        "files": [
+            "helpers/validator.php"
+        ]
     },
     "authors": [
         {
